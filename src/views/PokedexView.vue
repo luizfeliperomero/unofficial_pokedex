@@ -6,14 +6,17 @@ import { getPokemon, getPokemonCount } from '@/services/pokemonService.ts'
 import { ref, onMounted } from 'vue'
 import mockPokemon from '@/../mock_pokemon.json';
 import Paginator from 'primevue/paginator';
+import InputText from 'primevue/inputtext';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
 
 const pokemons = ref<Pokemon[]>([])
 const pokemonCount = ref(0);
 
 onMounted(async () => {
   try {
-    const data = await getPokemon(10, 1);
-	//const data = mockPokemon;
+    //const data = await getPokemon(10, 1);
+	const data = mockPokemon;
     pokemons.value = data;
 	pokemonCount.value = await getPokemonCount();
   } catch (err) {}
@@ -37,11 +40,22 @@ function onPageChange(event: { page: number; rows: number }) {
 function onPokemonSelected(pokemon: Pokemon) {
 	selectedPokemon.value = pokemon;
 }
+const value = ref(null);
 </script>
 <template>
   <PokemonDetails :pokemon="selectedPokemon" />
-  <div class="flex flex-wrap gap-5 justify-center">
-    <PokemonCard :pokemon="p" @select="onPokemonSelected" v-for="p in pokemons" :key="p.name"/>
+  <div class="flex flex-col align-center items-center gap-10">
+	  <div class="flex justify-center align-center items-center gap-5">
+		  <div></div>
+		  <IconField>
+			<InputIcon class="pi pi-search" />
+			<InputText v-model="value1" placeholder="Search" />
+		  </IconField>
+		  <i class="pi pi-filter"></i>
+	  </div>
+	  <div class="flex flex-wrap gap-5 justify-center">
+		<PokemonCard :pokemon="p" @select="onPokemonSelected" v-for="p in pokemons" :key="p.name"/>
+	  </div>
   </div>
   <Paginator
 	  :rows="rows"
