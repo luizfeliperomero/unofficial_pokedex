@@ -9,8 +9,8 @@ const pokemons = ref<Pokemon[]>([])
 
 onMounted(async () => {
   try {
-    //const data = await getPokemon();
-	const data = [
+    const data = await getPokemon();
+	/*const data = [
     {
         "name": "ivysaur",
         "forms": [
@@ -154,14 +154,18 @@ onMounted(async () => {
             "bug"
         ]
     }
-];
+];*/
     pokemons.value = data;
   } catch (err) {}
 })
+const selectedPokemon = ref<Pokemon | null>(null);
+function onPokemonSelected(pokemon: Pokemon) {
+	selectedPokemon.value = pokemon;
+}
 </script>
 <template>
-  <PokemonDetails />
+  <PokemonDetails :pokemon="selectedPokemon" />
   <div class="flex flex-wrap gap-5 justify-center">
-    <PokemonCard :pokemon="p" v-for="p in pokemons" :key="p.name"/>
+    <PokemonCard :pokemon="p" @select="onPokemonSelected" v-for="p in pokemons" :key="p.name"/>
   </div>
 </template>
