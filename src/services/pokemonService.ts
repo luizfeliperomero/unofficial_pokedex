@@ -20,4 +20,16 @@ export const getPokemonCount = async () => {
   return response.data;
 }
 
+export const getPokemonByType = async (
+  limit: number,
+  offset: number,
+  types: string[],
+) => {
+  const response = await axios.post<Pokemon[]>(`${api}/pokemon/type`, {
+    types,
+    limit,
+    offset,
+  });
 
+  return response.data;
+};

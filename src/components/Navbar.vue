@@ -14,7 +14,7 @@
 	document.body.classList.toggle('dark');
 	isDark.value = document.body.classList.contains('dark');
     };
-    const toggleIcon = computed(() => (isDark.value ? lightIcon : darkIcon))
+    const toggleIcon = computed(() => (isDark.value ? darkIcon : lightIcon))
 </script>
 
 <template>

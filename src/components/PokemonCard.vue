@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type Pokemon from '@/models/Pokemon.interface'
+import { TYPE_COLORS } from '@/constants/pokemonTypes.ts';
 
 const props = defineProps<{
   pokemon: Pokemon
@@ -18,25 +19,6 @@ const capitalize = (text) => {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
-const TYPE_COLORS: Record<string, string> = {
-  fire: '#ef4444',
-  water: '#3b82f6',
-  grass: '#22c55e',
-  electric: '#eab308',
-  ice: '#67e8f9',
-  fighting: '#b91c1c',
-  poison: '#a855f7',
-  ground: '#d97706',
-  flying: '#38bdf8',
-  psychic: '#ec4899',
-  bug: '#84cc16',
-  rock: '#a16207',
-  ghost: '#6366f1',
-  dragon: '#7c3aed',
-  dark: '#1f2937',
-  steel: '#9ca3af',
-  fairy: '#f472b6',
-};
 
 const getTypeColor = (type: string): string => {
   return TYPE_COLORS[type.toLowerCase()] ?? '#9ca3af';

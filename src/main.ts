@@ -4,13 +4,22 @@ import App from './App.vue'
 import router from './router'
 import PrimeVue from 'primevue/config';
 import Aura from '@primeuix/themes/aura';
+import { definePreset } from '@primeuix/themes';
 
 const app = createApp(App)
+
+const MyAura = definePreset(Aura, {
+  semantic: {
+    primary: {
+      500: '#011763',
+    }
+  }
+});
 
 app.use(router)
 app.use(PrimeVue, {
     theme: {
-        preset: Aura,
+        preset: MyAura,
         options: {
             darkModeSelector: '.my-app-dark',
         }
