@@ -11,8 +11,8 @@ export interface EvolutionChain {
 }
 
 export interface Pokemon {
-  name: string
-  sprites: Sprites
-  types: string[]
+  name: string,
+  sprites: Sprites,
+  types: string[],
   evolution_chain: EvolutionChain
 }

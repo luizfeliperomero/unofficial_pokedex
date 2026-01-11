@@ -10,7 +10,14 @@ export const getPokemon = async (limit, offset) => {
   return response.data;
 }
 
+export const getPokemonByName = async (name) => {
+  const response = await axios.get<Pokemon>(`${api}/pokemon/${name}`);
+  return response.data;
+}
+
 export const getPokemonCount = async () => {
   const response = await axios.get<Pokemon[]>(`${api}/pokemon/count`)
   return response.data;
 }
+
+

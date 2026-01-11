@@ -2,7 +2,7 @@
 import PokemonDetails from '@/components/PokemonDetails.vue'
 import type Pokemon from '@/models/Pokemon.interface'
 import PokemonCard from '@/components/PokemonCard.vue'
-import { getPokemon, getPokemonCount } from '@/services/pokemonService.ts'
+import { getPokemon, getPokemonByName, getPokemonCount } from '@/services/pokemonService.ts'
 import { ref, onMounted } from 'vue'
 import mockPokemon from '@/../mock_pokemon.json';
 import Paginator from 'primevue/paginator';
@@ -12,6 +12,7 @@ import InputIcon from 'primevue/inputicon';
 
 const pokemons = ref<Pokemon[]>([])
 const pokemonCount = ref(0);
+const searchInput = ref("");
 
 onMounted(async () => {
   try {
@@ -37,6 +38,21 @@ function onPageChange(event: { page: number; rows: number }) {
   loadPage(currentPage.value);
 }
 
+async function onSearch() {
+  if (!searchInput.value.trim()) {
+	  loadPage(currentPage.value);
+	  return;
+  }
+  try {
+	  const response = await getPokemonByName(searchInput.value);
+	  let arr: Pokemon[] = [];
+      arr.push(response);
+	  pokemons.value = arr;
+  } catch(err) {
+	  pokemons.value = [];
+  }
+}
+
 function onPokemonSelected(pokemon: Pokemon) {
 	selectedPokemon.value = pokemon;
 }
@@ -49,25 +65,28 @@ const value = ref(null);
 		  <div></div>
 		  <IconField>
 			<InputIcon class="pi pi-search" />
-			<InputText v-model="value1" placeholder="Search" />
+			<InputText @keydown.enter="onSearch" v-model="searchInput" placeholder="Search for name" />
 		  </IconField>
 		  <i class="pi pi-filter"></i>
 	  </div>
-	  <div class="flex flex-wrap gap-5 justify-center">
+	  <div v-if="pokemons && pokemons.length > 0">
+	  <div  class="flex flex-wrap gap-5 justify-center">
 		<PokemonCard :pokemon="p" @select="onPokemonSelected" v-for="p in pokemons" :key="p.name"/>
 	  </div>
-  <Paginator
-	  :rows="rows"
-	  :totalRecords="pokemonCount"
-	  :rowsPerPageOptions="[10, 20, 30]"
-	  :first="(currentPage - 1) * rows"
-	  @page="onPageChange"
-	  :template="{
-		'640px': 'PrevPageLink CurrentPageReport NextPageLink',
-		'960px': 'FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink',
-		'1300px': 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink',
-		default: 'FirstPageLink PrevPageLink PageLinks NextPageLink JumpToPageDropdown JumpToPageInput'
-	  }"
-	/>
+	  <Paginator
+		  :rows="rows"
+		  :totalRecords="pokemonCount"
+		  :rowsPerPageOptions="[10, 20, 30]"
+		  :first="(currentPage - 1) * rows"
+		  @page="onPageChange"
+		  :template="{
+			'640px': 'PrevPageLink CurrentPageReport NextPageLink',
+			'960px': 'FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink',
+			'1300px': 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink',
+			default: 'FirstPageLink PrevPageLink PageLinks NextPageLink JumpToPageDropdown JumpToPageInput'
+		  }"
+		/>
+     </div>
+	 <p v-else>Pokémon Not Found</p>
   </div>
 </template>
