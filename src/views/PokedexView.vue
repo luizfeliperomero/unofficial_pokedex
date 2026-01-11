@@ -56,7 +56,6 @@ const value = ref(null);
 	  <div class="flex flex-wrap gap-5 justify-center">
 		<PokemonCard :pokemon="p" @select="onPokemonSelected" v-for="p in pokemons" :key="p.name"/>
 	  </div>
-  </div>
   <Paginator
 	  :rows="rows"
 	  :totalRecords="pokemonCount"
@@ -70,4 +69,5 @@ const value = ref(null);
 		default: 'FirstPageLink PrevPageLink PageLinks NextPageLink JumpToPageDropdown JumpToPageInput'
 	  }"
 	/>
+  </div>
 </template>
