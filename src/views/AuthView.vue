@@ -106,23 +106,79 @@ const toggleMode = () => {
 };
 </script>
 <template>
-  <div class="min-h-screen flex items-center align-center justify-center px-3">
-    <div class="w-full max-w-md px-3">
+		<div class="min-h-screen flex items-center justify-center px-3
+            bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+  <!-- DESKTOP CONTAINER -->
+  <div
+    class="w-full
+           md:max-w-6xl
+           md:border-2 md:border-black/20
+           md:rounded-2xl
+           md:p-6
+           md:grid md:grid-cols-2 md:gap-6
+           md:bg-white/60 md:backdrop-blur"
+  >
 
-      <div class="surface-card shadow-2 border-round-xl p-4 sm:p-5">
+    <!-- LEFT PANEL (DESKTOP ONLY) -->
+    <div
+      class="hidden md:flex
+             border-2 border-black/20 rounded-xl
+             p-6
+             flex-col justify-between
+             bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500
+             text-white gap-10"
+    >
+      <div class="flex flex-col gap-6">
+        <img
+          src="../assets/unofficial_pokedex.png"
+          alt="Unofficial Pokedex"
+          class="max-w-xs mx-auto drop-shadow-lg"
+        />
+
+        <!-- Feature cards -->
+        <div class="grid gap-4">
+          <div class="flex items-center gap-3 bg-white/20 p-4 rounded-xl">
+            <i class="pi pi-star-fill text-yellow-300 text-lg"></i>
+            <span class="font-medium">Save favorite Pokémon</span>
+          </div>
+
+          <div class="flex items-center gap-3 bg-white/20 p-4 rounded-xl">
+            <i class="pi pi-filter text-cyan-200 text-lg"></i>
+            <span class="font-medium">Filter by type & attributes</span>
+          </div>
+
+          <div class="flex items-center gap-3 bg-white/20 p-4 rounded-xl">
+            <i class="pi pi-bolt text-yellow-200 text-lg"></i>
+            <span class="font-medium">Fast & responsive Pokédex</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Disclaimer (desktop) -->
+      <p class="text-xs leading-relaxed text-white/90">
+        This is an unofficial, non-commercial demo project created for evaluation purposes only.
+        Pokémon and Pokémon character names are trademarks of Nintendo, Game Freak, and Creatures Inc.
+        Pokémon data is provided by PokéAPI (pokeapi.co).
+      </p>
+    </div>
+
+    <!-- RIGHT PANEL (YOUR ORIGINAL MOBILE CONTENT) -->
+    <div class="w-full max-w-md px-3 mx-auto md:flex md:items-center">
+
+      <!-- YOUR ORIGINAL CARD -->
+      <div class="surface-card shadow-2 border-round-xl p-4 sm:p-5 md:border-2 border-black/20 md:border-none md:w-full">
         <Form
           v-slot="$form"
           :initialValues="initialValues"
           :resolver="resolver"
-		  :key="mode"
+          :key="mode"
           @submit="onSubmit"
           class="flex flex-col gap-4"
         >
-          <!-- LOGO -->
-          <img
-            class="h-3rem sm:h-4rem object-contain mx-auto mb-2"
+		<img
+            class="h-3rem sm:h-4rem object-contain mx-auto mb-2 md:hidden"
             alt="App logo"
-			src="../assets/unofficial_pokedex.png"
+            src="../assets/unofficial_pokedex.png"
           />
 
           <h2 class="text-center text-xl sm:text-2xl font-semibold">
@@ -182,9 +238,11 @@ const toggleMode = () => {
 
           <!-- SUBMIT -->
           <Button
-			:disabled="mode === 'signup' && $form.confirmPassword?.invalid"
+            :disabled="mode === 'signup' && $form.confirmPassword?.invalid"
             type="submit"
-			class="w-full mt-2 active:!bg-[#FFCB05] active:!border-[#FFCB05] focus:!border-[#FFCB05] focus:!bg-[#FFCB05] hover:!bg-[#FFCB05] hover:!border-[#FFCB05]"
+            class="w-full mt-2 active:!bg-[#FFCB05] active:!border-[#FFCB05]
+                   focus:!border-[#FFCB05] focus:!bg-[#FFCB05]
+                   hover:!bg-[#FFCB05] hover:!border-[#FFCB05]"
             :label="mode === 'signin' ? 'Sign In' : 'Sign Up'"
           />
 
@@ -193,7 +251,7 @@ const toggleMode = () => {
             type="button"
             text
             severity="secondary"
-            class="w-full "
+            class="w-full"
             @click="toggleMode"
             :label="mode === 'signin'
               ? 'Create an account'
@@ -202,6 +260,13 @@ const toggleMode = () => {
         </Form>
       </div>
 
+      <!-- MOBILE DISCLAIMER (UNCHANGED) -->
+      <p class="text-center text-xs text-gray-500 mt-4 px-2 md:hidden">
+        This is an unofficial, non-commercial demo project created for evaluation purposes only.
+        Pokémon and Pokémon character names are trademarks of Nintendo, Game Freak, and Creatures Inc.
+        Pokémon data is provided by PokéAPI (pokeapi.co).
+      </p>
     </div>
   </div>
+</div>
 </template>

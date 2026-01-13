@@ -112,7 +112,7 @@ const value = ref(null);
 			<InputIcon class="pi pi-search" />
 			<InputText @keydown.enter="onSearch" v-model="searchInput" placeholder="Search for name" />
 		  </IconField>
-		  <i @click="filterVisible = true" class="pi pi-filter"></i>
+		  <i @click="filterVisible = true" class="pi pi-filter cursor-pointer"></i>
 		  <Dialog
   v-model:visible="filterVisible"
   modal
