@@ -8,6 +8,7 @@ import Button from 'primevue/button';
 import Message from 'primevue/message';
 import { useToast } from 'primevue/usetoast';
 import { authenticate } from '@/services/authService.js';
+import { saveUser } from '@/services/userService.js';
 import { useRouter } from 'vue-router';
 
 const mode = ref('signin'); // 'signin' | 'signup'
@@ -47,23 +48,35 @@ const onSubmit = async ({ values, valid }) => {
 
   try {
     if (mode.value === 'signin') {
-      const response = await authenticate(values.email, values.password);
+      await authenticate(values.email, values.password);
 
-	  toast.add({
+      toast.add({
         severity: 'success',
         summary: 'Welcome back!',
         detail: 'You have been signed in successfully.',
         life: 3000
       });
 
-	  router.push("/");
-	}
+      router.push('/');
+    }
+
+    if (mode.value === 'signup') {
+      await saveUser(values.email, values.password);
+
+      toast.add({
+        severity: 'success',
+        summary: 'Account created',
+        detail: 'You can now sign in.',
+        life: 3000
+      });
+
+      mode.value = 'signin';
+    }
   } catch (error) {
-	 console.log("Authentication failed");
-	 toast.add({
+    toast.add({
       severity: 'error',
-      summary: 'Authentication failed',
-      detail: error.response?.data?.message ?? 'Invalid credentials',
+      summary: 'Request failed',
+      detail: error.response?.data?.message ?? 'Something went wrong',
       life: 3000
     });
   }
