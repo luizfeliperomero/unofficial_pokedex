@@ -153,19 +153,11 @@ const value = ref(null);
 		<PokemonCard :pokemon="p" @select="onPokemonSelected" v-for="p in pokemons" :key="p.name"/>
 	  </div>
 	  <Paginator
-		  v-if="pokemons.length > 1"
-		  :rows="rows"
-		  :totalRecords="pokemonCount"
-		  :rowsPerPageOptions="[10, 20, 30]"
-		  :first="(currentPage - 1) * rows"
-		  @page="onPageChange"
-		  :template="{
-			'640px': 'PrevPageLink CurrentPageReport NextPageLink',
-			'960px': 'FirstPageLink PrevPageLink CurrentPageReport NextPageLink LastPageLink',
-			'1300px': 'FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink',
-			default: 'FirstPageLink PrevPageLink PageLinks NextPageLink JumpToPageDropdown JumpToPageInput'
-		  }"
-		/>
+	  :rows="rows"
+	  :totalRecords="pokemonCount"
+	  :first="(currentPage - 1) * rows"
+	  @page="onPageChange"
+	/>
      </div>
 	 <p v-else>Pokémon Not Found</p>
   </div>

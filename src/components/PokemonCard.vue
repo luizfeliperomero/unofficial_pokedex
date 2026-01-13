@@ -6,6 +6,8 @@ const props = defineProps<{
   pokemon: Pokemon
 }>();
 
+const image_placeholder = "../assets/no_poke_img.png"
+
 const emitPokemon = defineEmits<{
   (e: 'select', pokemon: Pokemon): void
 }>();
@@ -51,7 +53,8 @@ const getContrastTextColor = (bgColor: string): '#000' | '#fff' => {
 	<div class="flex justify-end w-full">
 	<i class="pi pi-star"></i>
 	</div>
-    <img @click="handleIMGClick" class="p-0 w-24 h-24 object-contain select-none cursor-pointer hover:scale-120" v-bind:src="pokemon.sprites.official_artwork" />
+    <img v-if="pokemon.sprites.official_artwork" @click="handleIMGClick" class="p-0 w-24 h-24 object-contain select-none cursor-pointer hover:scale-120" v-bind:src="pokemon.sprites.official_artwork" />
+    <img v-else @click="handleIMGClick" class="p-0 w-24 h-24 object-contain select-none cursor-pointer hover:scale-120" src="@/assets/no_poke_img.png" />
     <p class="text-sm font-bold text-center w-full">{{ capitalize(pokemon.name) }}</p>
 	<div class="flex flex-wrap gap-1">
 		<div class="rounded-sm p-1 text-xs overflow-auto" :style="{ backgroundColor: getTypeColor(t), color: getContrastTextColor(getTypeColor(t)) }" v-for="t in pokemon.types" :key="t">{{ capitalize(t) }}</div>
