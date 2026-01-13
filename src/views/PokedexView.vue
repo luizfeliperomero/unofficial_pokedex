@@ -152,12 +152,16 @@ const value = ref(null);
 	  <div  class="flex flex-wrap gap-5 justify-center">
 		<PokemonCard :pokemon="p" @select="onPokemonSelected" v-for="p in pokemons" :key="p.name"/>
 	  </div>
+	  <div class="p-10">
 	  <Paginator
-	  :rows="rows"
-	  :totalRecords="pokemonCount"
-	  :first="(currentPage - 1) * rows"
-	  @page="onPageChange"
-	/>
+		  :rows="rows"
+		  :totalRecords="pokemonCount"
+		  :first="(currentPage - 1) * rows"
+		  :pageLinkSize="3"
+		  @page="onPageChange"
+		  template="PrevPageLink CurrentPageReport NextPageLink"
+	  />
+	  </div>
      </div>
 	 <p v-else>Pokémon Not Found</p>
   </div>
