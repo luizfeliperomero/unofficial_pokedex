@@ -105,7 +105,7 @@ const toggleFavorite = async () => {
 <template>
   <div class="p-2 w-30 h-42 rounded-md flex flex-col justify-between items-center shadow-lg dark:bg-[#262523]">
 	<div @click="toggleFavorite" class="flex justify-end w-full">
-	<i :class="isFavorite ? 'pi-star-fill text-yellow-400' : 'pi-star text-gray-400'" class="pi"></i>
+	<i :class="isFavorite ? 'pi-star-fill text-yellow-400' : 'pi-star text-gray-400'" class="pi cursor-pointer hover:scale-120"></i>
 	</div>
     <img v-if="pokemon.sprites.official_artwork" @click="handleIMGClick" class="p-0 w-24 h-24 object-contain select-none cursor-pointer hover:scale-120" v-bind:src="pokemon.sprites.official_artwork" />
     <img v-else @click="handleIMGClick" class="p-0 w-24 h-24 object-contain select-none cursor-pointer hover:scale-120" src="@/assets/no_poke_img.png" />

@@ -103,6 +103,7 @@ function onPokemonSelected(pokemon: Pokemon) {
 const value = ref(null);
 </script>
 <template>
+<div class="md:pl-200 md:pr-200">
   <PokemonDetails :pokemon="selectedPokemon" />
   <div class="flex flex-col align-center items-center gap-10">
 	  <div class="flex justify-center align-center items-center gap-5">
@@ -180,4 +181,5 @@ const value = ref(null);
      </div>
 	 <p v-else>Pokémon Not Found</p>
   </div>
+	</div>
 </template>
