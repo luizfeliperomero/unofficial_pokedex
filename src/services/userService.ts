@@ -13,7 +13,16 @@ export const getUser = async () => {
 	return response;
 }
 
-export const getEmail = async () => {
-	const response = await api.get("/user/email");
+export const savePokemon = async(pokemon) => {
+	const response = await api.post("/user/pokemon", {
+		pokemon
+	});
+	return response;
+}
+
+export const deletePokemon = async(pokemonName) => {
+	const response = await api.delete("/user/pokemon", {
+		data: { pokemonName	}
+	});
 	return response;
 }

@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { getEmail } from '@/services/userService'
+import { getUser } from '@/services/userService'
 
 const router = useRouter()
 const email = ref<string>('')
 
 onMounted(async () => {
   try {
-    const response = await getEmail()
-	email.value = response.data.email;
+    const response = await getUser()
+	email.value = response.data.user.email;
   } catch (err) {
     handleLogout()
   }

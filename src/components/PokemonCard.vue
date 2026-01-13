@@ -1,10 +1,24 @@
 <script setup lang="ts">
 import type Pokemon from '@/models/Pokemon.interface'
 import { TYPE_COLORS } from '@/constants/pokemonTypes.ts';
+import { savePokemon, deletePokemon } from '@/services/userService.ts';
+import { useToast } from 'primevue/usetoast';
+import { ref, computed, onMounted } from 'vue';
+
+const user = ref(null);
+
+const toast = useToast();
 
 const props = defineProps<{
   pokemon: Pokemon
 }>();
+
+onMounted(() => {
+  const stored = localStorage.getItem('user');
+  if (stored) {
+    user.value = JSON.parse(stored);
+  }
+});
 
 const image_placeholder = "../assets/no_poke_img.png"
 
@@ -21,10 +35,16 @@ const capitalize = (text) => {
   return text.charAt(0).toUpperCase() + text.slice(1)
 }
 
-
 const getTypeColor = (type: string): string => {
   return TYPE_COLORS[type.toLowerCase()] ?? '#9ca3af';
 };
+
+const isFavorite = computed(() => {
+  if (!user.value || !user.value.pokemons) return false;
+
+  return user.value.pokemons.some(p => p.name === props.pokemon.name);
+});
+
 
 const getContrastTextColor = (bgColor: string): '#000' | '#fff' => {
   const color = bgColor.replace('#', '')
@@ -46,12 +66,46 @@ const getContrastTextColor = (bgColor: string): '#000' | '#fff' => {
   return luminance > 0.5 ? '#000' : '#fff'
 }
 
+const toggleFavorite = async () => {
+  if (!user.value) return;
+
+  const favoriteIndex = user.value.pokemons.findIndex(p => p.name === props.pokemon.name);
+
+  if (favoriteIndex !== -1) {
+    // Remove from favorites
+	const response = await deletePokemon(props.pokemon.name);
+	if(response.status === 200) {
+		user.value.pokemons.splice(favoriteIndex, 1);
+		toast.add({
+		  severity: 'info',
+		  summary: 'Removed from favorites',
+		  detail: `${capitalize(props.pokemon.name)} removed!`,
+		  life: 3000
+		});
+	}
+  } else {
+    // Add to favorites
+    const response = await savePokemon(props.pokemon);
+    if (response.status === 201) {
+      user.value.pokemons.push(props.pokemon); // Vue will detect the change
+      toast.add({
+        severity: 'success',
+        summary: 'Added to favorites',
+        detail: `${capitalize(props.pokemon.name)} added!`,
+        life: 3000
+      });
+    }
+  }
+
+  // Update localStorage
+  localStorage.setItem('user', JSON.stringify(user.value));
+};
 
 </script>
 <template>
   <div class="p-2 w-30 h-42 rounded-md flex flex-col justify-between items-center shadow-lg dark:bg-[#262523]">
-	<div class="flex justify-end w-full">
-	<i class="pi pi-star"></i>
+	<div @click="toggleFavorite" class="flex justify-end w-full">
+	<i :class="isFavorite ? 'pi-star-fill text-yellow-400' : 'pi-star text-gray-400'" class="pi"></i>
 	</div>
     <img v-if="pokemon.sprites.official_artwork" @click="handleIMGClick" class="p-0 w-24 h-24 object-contain select-none cursor-pointer hover:scale-120" v-bind:src="pokemon.sprites.official_artwork" />
     <img v-else @click="handleIMGClick" class="p-0 w-24 h-24 object-contain select-none cursor-pointer hover:scale-120" src="@/assets/no_poke_img.png" />

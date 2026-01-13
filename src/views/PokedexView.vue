@@ -19,7 +19,6 @@ const searchInput = ref("");
 const filterVisible = ref(false);
 const selectedTypes = ref<Set<string>>(new Set());
 
-// toggle selection
 const toggleType = (type: string) => {
   if (selectedTypes.value.has(type)) {
     selectedTypes.value.delete(type);
@@ -28,13 +27,11 @@ const toggleType = (type: string) => {
   }
 };
 
-// reset filters
 const cancelFilters = () => {
   selectedTypes.value.clear();
   filterVisible.value = false;
 };
 
-// apply filters (emit / call API / store update)
 async function applyFilters() {
   const types = Array.from(selectedTypes.value);
   loadPage(getPokemonByType, currentPage.value, types)
@@ -44,7 +41,6 @@ async function applyFilters() {
 
 onMounted(async () => {
   try {
-    //const data = await getPokemon(10, 1);
 	const data = mockPokemon;
     pokemons.value = data;
 	pokemonCount.value = await getPokemonCount();
@@ -112,7 +108,6 @@ const value = ref(null);
   header="Filter by Type"
   :style="{ width: '25rem' }"
 >
-  <!-- Types -->
   <div class="flex flex-wrap gap-2 max-h-40 overflow-auto mb-4">
     <button
       v-for="(color, type) in TYPE_COLORS"
