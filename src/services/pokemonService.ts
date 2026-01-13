@@ -1,22 +1,20 @@
-import axios from 'axios'
+import api from './api.js'
 import type Pokemon from '@/models/Pokemon.interface'
 
-const api = 'http://localhost:8092/api/v1'
-
 export const getPokemon = async (limit, offset) => {
-  const response = await axios.get<Pokemon[]>(`${api}/pokemon`, {
+  const response = await api.get<Pokemon[]>(`/pokemon`, {
 	  params: { limit, offset }
   });
   return response.data;
 }
 
 export const getPokemonByName = async (name) => {
-  const response = await axios.get<Pokemon>(`${api}/pokemon/${name}`);
+  const response = await api.get<Pokemon>(`/pokemon/${name}`);
   return response.data;
 }
 
 export const getPokemonCount = async () => {
-  const response = await axios.get<Pokemon[]>(`${api}/pokemon/count`)
+  const response = await api.get<Pokemon[]>(`/pokemon/count`)
   return response.data;
 }
 
@@ -25,7 +23,7 @@ export const getPokemonByType = async (
   offset: number,
   types: string[],
 ) => {
-  const response = await axios.post<Pokemon[]>(`${api}/pokemon/type`, {
+  const response = await api.post<Pokemon[]>(`/pokemon/type`, {
     types,
     limit,
     offset,

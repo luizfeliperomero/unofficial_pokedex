@@ -48,7 +48,8 @@ const onSubmit = async ({ values, valid }) => {
 
   try {
     if (mode.value === 'signin') {
-      await authenticate(values.email, values.password);
+      const response = await authenticate(values.email, values.password);
+	  localStorage.setItem('token', response.data.token);
 
       toast.add({
         severity: 'success',

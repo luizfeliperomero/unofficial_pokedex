@@ -3,18 +3,21 @@
 	import Navbar from '@/components/Navbar.vue'
 	import { onMounted } from 'vue';
 	import Toast from 'primevue/toast';
+	import { getUser } from '@/services/userService.js';
 
+    const route = useRoute()
     const router = useRouter();
+	const authApi = "http://localhost:8092/api/v1/auth";
 
-	onMounted(() => {
-		if(localStorage.jwt) {
+	onMounted( async () => {
+		const response = await getUser();	
+		if(response.status == 200) {
 			router.push("/");
 		} else {
 			router.push("/auth");
 		}
 	});
 
-    const route = useRoute()
 </script>
 <template>
    <Toast position="top-right"/>
