@@ -17,7 +17,9 @@ const pokemons = ref<Pokemon[]>([])
 const pokemonCount = ref(0);
 const searchInput = ref("");
 const filterVisible = ref(false);
+const showFavorites = ref(false);
 const selectedTypes = ref<Set<string>>(new Set());
+const user = JSON.parse(localStorage.getItem('user'));
 
 const toggleType = (type: string) => {
   if (selectedTypes.value.has(type)) {
@@ -34,7 +36,11 @@ const cancelFilters = () => {
 
 async function applyFilters() {
   const types = Array.from(selectedTypes.value);
-  loadPage(getPokemonByType, currentPage.value, types)
+  if(showFavorites.value) {
+	loadPage(getUserPokemon, currentPage.value, types)
+  } else {
+	loadPage(getPokemonByType, currentPage.value, types)
+  }
 
   filterVisible.value = false;
 };
@@ -54,6 +60,10 @@ async function loadPage(getPokemonCallback, page: number, types?: string[]) {
   const offset = ((page - 1) * rows.value) + 1;
   const data = await getPokemonCallback(rows.value, offset, types);
   pokemons.value = Array.isArray(data[0]) ? data[0] : data;
+}
+
+const getUserPokemon = () => {
+	return user.pokemons;
 }
 
 function onPageChange(event: { page: number; rows: number }) {
@@ -109,6 +119,16 @@ const value = ref(null);
   :style="{ width: '25rem' }"
 >
   <div class="flex flex-wrap gap-2 max-h-40 overflow-auto mb-4">
+    <button
+      type="button"
+      class="px-2 py-1 bg-yellow-500 rounded text-xs capitalize transition-all"
+	  :style="{
+        opacity: showFavorites ? 1 : 0.4,
+	  }"
+      @click="showFavorites = !showFavorites"
+    >
+		Favorites
+    </button>
     <button
       v-for="(color, type) in TYPE_COLORS"
       :key="type"
