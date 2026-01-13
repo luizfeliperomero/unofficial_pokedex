@@ -159,7 +159,7 @@ const value = ref(null);
 		  :first="(currentPage - 1) * rows"
 		  :pageLinkSize="3"
 		  @page="onPageChange"
-		  template="PrevPageLink CurrentPageReport NextPageLink"
+		  template="PrevPageLink PageLinks NextPageLink"
 	  />
 	  </div>
      </div>
