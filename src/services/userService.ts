@@ -9,7 +9,11 @@ export const saveUser = async (email, password) => {
 }
 
 export const getUser = async () => {
-	const token = localStorage.getItem("token");
 	const response = await api.get("/user");
+	return response;
+}
+
+export const getEmail = async () => {
+	const response = await api.get("/user/email");
 	return response;
 }

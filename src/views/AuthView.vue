@@ -50,6 +50,7 @@ const onSubmit = async ({ values, valid }) => {
     if (mode.value === 'signin') {
       const response = await authenticate(values.email, values.password);
 	  localStorage.setItem('token', response.data.token);
+	  localStorage.setItem('id', response.data.id);
 
       toast.add({
         severity: 'success',
@@ -181,6 +182,7 @@ const toggleMode = () => {
 
           <!-- SUBMIT -->
           <Button
+			:disabled="mode === 'signup' && $form.confirmPassword?.invalid"
             type="submit"
 			class="w-full mt-2 active:!bg-[#FFCB05] active:!border-[#FFCB05] focus:!border-[#FFCB05] focus:!bg-[#FFCB05] hover:!bg-[#FFCB05] hover:!border-[#FFCB05]"
             :label="mode === 'signin' ? 'Sign In' : 'Sign Up'"

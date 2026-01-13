@@ -47,7 +47,7 @@ const getContrastTextColor = (bgColor: string): '#000' | '#fff' => {
 
 </script>
 <template>
-  <div class="p-2 w-30 h-42 rounded-md flex flex-col justify-between items-center shadow-lg">
+  <div class="p-2 w-30 h-42 rounded-md flex flex-col justify-between items-center shadow-lg dark:bg-[#262523]">
 	<div class="flex justify-end w-full">
 	<i class="pi pi-star"></i>
 	</div>

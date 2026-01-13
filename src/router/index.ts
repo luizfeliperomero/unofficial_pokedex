@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import PokedexView from '@/views/PokedexView.vue'
 import AuthView from '@/views/AuthView.vue'
+import ProfileView from '@/views/ProfileView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,6 +10,11 @@ const router = createRouter({
       path: '/',
       name: 'pokedex',
       component: PokedexView,
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: ProfileView,
     },
 	{
 	  path: '/auth',

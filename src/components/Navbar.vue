@@ -3,8 +3,8 @@
     import { ref, computed } from 'vue'
 	const items = [
 	  { label: 'Pokédex', icon: 'pi pi-book', to: '/' },
-	  { label: 'Favorites', icon: 'pi pi-star', to: '/search' },
-	  { label: 'Profile', icon: 'pi pi-user', to: '/search' },
+	  { label: 'Favorites', icon: 'pi pi-star', to: '/favorites' },
+	  { label: 'Profile', icon: 'pi pi-user', to: '/profile' },
 	]
 
 	const darkIcon = "pi pi-moon";
@@ -42,6 +42,7 @@
         <RouterLink
           :to="item.to"
           class="flex flex-col items-center gap-1"
+		  active-class="text-[#2A75BB] dark:text-[#FFCB05]"
         >
           <i :class="item.icon" class="text-xl"></i>
           <span class="text-xs md:hidden">{{ item.label }}</span>
