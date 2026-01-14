@@ -103,7 +103,7 @@ function onPokemonSelected(pokemon: Pokemon) {
 const value = ref(null);
 </script>
 <template>
-<div class="md:pl-200 md:pr-200">
+<div class="md:pl-40 md:flex md:flex-col md:align-center md:items-center md:justify-center md:gap-20">
   <PokemonDetails :pokemon="selectedPokemon" />
   <div class="flex flex-col align-center items-center gap-10">
 	  <div class="flex justify-center align-center items-center gap-5">
@@ -119,7 +119,7 @@ const value = ref(null);
   header="Filter by Type"
   :style="{ width: '25rem' }"
 >
-  <div class="flex flex-wrap gap-2 max-h-40 overflow-auto mb-4">
+  <div class="flex flex-wrap gap-2 max-w-200 overflow-auto mb-4">
     <button
       type="button"
       class="px-2 py-1 bg-yellow-500 rounded text-xs capitalize transition-all"
@@ -164,7 +164,7 @@ const value = ref(null);
   </div>
 </Dialog>
 	  </div>
-	  <div v-if="pokemons && pokemons.length > 0">
+	  <div v-if="pokemons && pokemons.length > 0" class="max-w-200">
 	  <div  class="flex flex-wrap gap-5 justify-center">
 		<PokemonCard :pokemon="p" @select="onPokemonSelected" v-for="p in pokemons" :key="p.name"/>
 	  </div>
