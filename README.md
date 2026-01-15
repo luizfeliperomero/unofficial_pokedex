@@ -1,42 +1,76 @@
-# unofficial_pokedex
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <img src="src/assets/unofficial_pokedex.png" alt="Logo" width="150" height="150">
 
-This template should help get you started developing with Vue 3 in Vite.
+<h3 align="center">Unofficial Pokédex</h3>
 
-## Recommended IDE Setup
+  <p align="center">
+    Unofficial Pokédex is an application that allows users to explore Pokémon data, manage favorites, and access detailed information powered by the PokéAPI.
+    <br />
+    <a href="http://34.228.25.225/">Check out!</a>
+</div>
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-## Recommended Browser Setup
+This is the frontend of the Unofficial Pokédex, it communicates with the [Pokemon Service](https://github.com/luizfeliperomero/pokemon_service) to build the UI.
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
 
-## Type Support for `.vue` Imports in TS
+### Built With
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+* [![Vue][Vue.js]][Vue-url]
+* [![Tailwind][TailwindCSS]][TailwindCSS-url]
+* [![Docker][Docker]][Docker-url]
 
-## Customize configuration
 
-See [Vite Configuration Reference](https://vite.dev/config/).
 
-## Project Setup
+<!-- GETTING STARTED -->
+## Getting Started
 
-```sh
-npm install
-```
+You can use NPM to run in development and Docker for production.
 
-### Compile and Hot-Reload for Development
+### Prerequisites
 
-```sh
-npm run dev
-```
+Regardless of whether you are running the application in development or production, you must have an instance of the [Pokemon Service](https://github.com/luizfeliperomero/pokemon_service) running.
 
-### Type-Check, Compile and Minify for Production
+#### Development
 
-```sh
-npm run build
-```
+* You must have Node.js and NPM installed: https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
+
+#### Production
+
+* You must have docker installed: https://docs.docker.com/engine/install/
+ 
+### Installation
+
+At the root of the project.
+
+#### Development
+
+1. ```sh
+    npm install
+    ```
+2. ```sh
+   npm run dev
+   ```
+
+#### Production
+
+1. Build the image
+   
+   ```sh
+   docker build -t unofficial_pokedex .
+   ```
+3. Run the container
+   ```sh
+    docker run -p 80:80 unofficial_pokedex
+    ```
+
+<!-- Shields.io badges. You can a comprehensive list with many more badges at: https://github.com/inttter/md-badges -->
+[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
+[Vue-url]: https://vuejs.org/
+[TailwindCSS]: https://img.shields.io/badge/-Tailwind_CSS-38B2AC?style=flat&logo=tailwindcss&logoColor=white
+[TailwindCSS-url]: https://tailwindcss.com/
+[Docker]: https://img.shields.io/badge/-Docker-2496ED?style=flat&logo=docker&logoColor=white
+[Docker-url]: https://www.docker.com/
