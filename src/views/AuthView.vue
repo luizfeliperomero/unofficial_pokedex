@@ -8,12 +8,14 @@ import Button from 'primevue/button';
 import Message from 'primevue/message';
 import { useToast } from 'primevue/usetoast';
 import { authenticate } from '@/services/authService.js';
-import { saveUser } from '@/services/userService.js';
+import { saveUser, getUser } from '@/services/userService.js';
 import { useRouter } from 'vue-router';
+import { useUserStore } from '@/stores/user'
 
-const mode = ref('signin'); // 'signin' | 'signup'
+const mode = ref('signin');
 const toast = useToast();
 const router = useRouter();
+const userStore = useUserStore();
 
 const initialValues = reactive({
   email: '',
@@ -51,6 +53,9 @@ const onSubmit = async ({ values, valid }) => {
       const response = await authenticate(values.email, values.password);
 	  localStorage.setItem('token', response.data.token);
 	  localStorage.setItem('id', response.data.id);
+
+	  const userResponse = await getUser();	
+	  userStore.setUser(userResponse.data.user);
 
       toast.add({
         severity: 'success',

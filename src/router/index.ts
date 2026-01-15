@@ -10,11 +10,13 @@ const router = createRouter({
       path: '/',
       name: 'pokedex',
       component: PokedexView,
+	  meta: { requiresAuth: true }
     },
     {
       path: '/profile',
       name: 'profile',
       component: ProfileView,
+	  meta: { requiresAuth: true }
     },
 	{
 	  path: '/auth',
@@ -23,6 +25,18 @@ const router = createRouter({
 	  meta: { hideNavbar: true }
 	}
   ],
-})
+});
+
+router.beforeEach((to) => {
+  const isAuthenticated = !!localStorage.getItem('token')
+
+  if (to.meta.requiresAuth && !isAuthenticated) {
+    return { name: 'auth' }
+  }
+
+  if (to.name === 'auth' && isAuthenticated) {
+    return { name: 'pokedex' }
+  }
+});
 
 export default router

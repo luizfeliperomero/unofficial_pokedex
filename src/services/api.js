@@ -2,7 +2,7 @@ import axios from 'axios';
 import router from '@/router';
 
 const api = axios.create({
-  baseURL: 'http://localhost:8092/api/v1',
+  baseURL: import.meta.env.VITE_POKEMON_SERVICE_URL,
   timeout: 10000
 });
 
@@ -26,7 +26,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+	  if (error.response?.status === 401) {
       localStorage.removeItem('token')
 
       if (router.currentRoute.value.path !== '/auth') {

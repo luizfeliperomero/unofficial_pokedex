@@ -4,21 +4,16 @@ import { TYPE_COLORS } from '@/constants/pokemonTypes.ts';
 import { savePokemon, deletePokemon } from '@/services/userService.ts';
 import { useToast } from 'primevue/usetoast';
 import { ref, computed, onMounted } from 'vue';
+import { useUserStore } from '@/stores/user';
 
-const user = ref(null);
+const userStore = useUserStore();
+const user = userStore.user;
 
 const toast = useToast();
 
 const props = defineProps<{
   pokemon: Pokemon
 }>();
-
-onMounted(() => {
-  const stored = localStorage.getItem('user');
-  if (stored) {
-    user.value = JSON.parse(stored);
-  }
-});
 
 const image_placeholder = "../assets/no_poke_img.png"
 
@@ -40,9 +35,9 @@ const getTypeColor = (type: string): string => {
 };
 
 const isFavorite = computed(() => {
-  if (!user.value || !user.value.pokemons) return false;
+  if (!user || !user.pokemons) return false;
 
-  return user.value.pokemons.some(p => p.name === props.pokemon.name);
+  return user.pokemons.some(p => p.name === props.pokemon.name);
 });
 
 
@@ -67,15 +62,14 @@ const getContrastTextColor = (bgColor: string): '#000' | '#fff' => {
 }
 
 const toggleFavorite = async () => {
-  if (!user.value) return;
+  if (!user) return;
 
-  const favoriteIndex = user.value.pokemons.findIndex(p => p.name === props.pokemon.name);
+  const favoriteIndex = user.pokemons.findIndex(p => p.name === props.pokemon.name);
 
   if (favoriteIndex !== -1) {
-    // Remove from favorites
 	const response = await deletePokemon(props.pokemon.name);
 	if(response.status === 200) {
-		user.value.pokemons.splice(favoriteIndex, 1);
+		user.pokemons.splice(favoriteIndex, 1);
 		toast.add({
 		  severity: 'info',
 		  summary: 'Removed from favorites',
@@ -84,10 +78,9 @@ const toggleFavorite = async () => {
 		});
 	}
   } else {
-    // Add to favorites
     const response = await savePokemon(props.pokemon);
     if (response.status === 201) {
-      user.value.pokemons.push(props.pokemon); // Vue will detect the change
+      user.pokemons.push(props.pokemon);
       toast.add({
         severity: 'success',
         summary: 'Added to favorites',
@@ -96,9 +89,6 @@ const toggleFavorite = async () => {
       });
     }
   }
-
-  // Update localStorage
-  localStorage.setItem('user', JSON.stringify(user.value));
 };
 
 </script>

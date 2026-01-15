@@ -4,7 +4,9 @@
 	import { onMounted } from 'vue';
 	import Toast from 'primevue/toast';
 	import { getUser } from '@/services/userService.js';
+	import { useUserStore } from '@/stores/user'
 
+	const userStore = useUserStore();
     const route = useRoute()
     const router = useRouter();
 	const authApi = "http://localhost:8092/api/v1/auth";
@@ -12,7 +14,7 @@
 	onMounted( async () => {
 		const response = await getUser();	
 		if(response.status == 200) {
-			localStorage.setItem("user", JSON.stringify(response.data.user));
+			userStore.setUser(response.data.user);
 			router.push("/");
 		} else {
 			router.push("/auth");

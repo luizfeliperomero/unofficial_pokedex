@@ -11,15 +11,18 @@ import IconField from 'primevue/iconfield';
 import InputIcon from 'primevue/inputicon';
 import Dialog from 'primevue/dialog';
 import Button from 'primevue/button';
+import ProgressSpinner from 'primevue/progressspinner';
 import { TYPE_COLORS } from '@/constants/pokemonTypes.ts';
+import { useUserStore } from '@/stores/user';
 
 const pokemons = ref<Pokemon[]>([])
 const pokemonCount = ref(0);
 const searchInput = ref("");
 const filterVisible = ref(false);
 const showFavorites = ref(false);
+const showSpinner = ref(false);
 const selectedTypes = ref<Set<string>>(new Set());
-const user = JSON.parse(localStorage.getItem('user'));
+const userStore = useUserStore();
 
 const toggleType = (type: string) => {
   if (selectedTypes.value.has(type)) {
@@ -38,6 +41,8 @@ async function applyFilters() {
   const types = Array.from(selectedTypes.value);
   if(showFavorites.value) {
 	loadPage(getUserPokemon, currentPage.value, types)
+  } else if(types.length === 0) {
+	loadPage(getPokemon, currentPage.value, types)
   } else {
 	loadPage(getPokemonByType, currentPage.value, types)
   }
@@ -47,8 +52,7 @@ async function applyFilters() {
 
 onMounted(async () => {
   try {
-	const data = mockPokemon;
-    pokemons.value = data;
+	loadPage(getPokemon, currentPage.value)
 	pokemonCount.value = await getPokemonCount();
   } catch (err) {}
 })
@@ -57,12 +61,18 @@ const rows = ref(10);
 const currentPage = ref(1);
 
 async function loadPage(getPokemonCallback, page: number, types?: string[]) {
-  const offset = ((page - 1) * rows.value) + 1;
-  const data = await getPokemonCallback(rows.value, offset, types);
-  pokemons.value = Array.isArray(data[0]) ? data[0] : data;
+  showSpinner.value = true;
+  try {
+	  const offset = ((page - 1) * rows.value);
+	  const data = await getPokemonCallback(rows.value, offset, types);
+	  pokemons.value = Array.isArray(data[0]) ? data[0] : data;
+  } finally {
+	showSpinner.value = false;
+  }
 }
 
 const getUserPokemon = () => {
+	const user = userStore.user;
 	return user.pokemons;
 }
 
@@ -87,6 +97,8 @@ async function onSearch() {
 	  }
 	  return;
   }
+  pokemons.value=[];
+  showSpinner.value = true;
   try {
 	  const response = await getPokemonByName(searchInput.value);
 	  let arr: Pokemon[] = [];
@@ -94,6 +106,8 @@ async function onSearch() {
 	  pokemons.value = arr;
   } catch(err) {
 	  pokemons.value = [];
+  } finally {
+	showSpinner.value = false;
   }
 }
 
@@ -122,7 +136,7 @@ const value = ref(null);
   <div class="flex flex-wrap gap-2 max-w-200 overflow-auto mb-4">
     <button
       type="button"
-      class="px-2 py-1 bg-yellow-500 rounded text-xs capitalize transition-all"
+      class="px-2 py-1 cursor-pointer bg-yellow-500 rounded text-xs capitalize transition-all"
 	  :style="{
         opacity: showFavorites ? 1 : 0.4,
 	  }"
@@ -134,7 +148,7 @@ const value = ref(null);
       v-for="(color, type) in TYPE_COLORS"
       :key="type"
       type="button"
-      class="px-2 py-1 rounded text-xs capitalize transition-all"
+      class="px-2 py-1 cursor-pointer rounded text-xs capitalize transition-all"
       :style="{
         backgroundColor: color,
         opacity: selectedTypes.has(type) ? 1 : 0.4,
@@ -164,7 +178,7 @@ const value = ref(null);
   </div>
 </Dialog>
 	  </div>
-	  <div v-if="pokemons && pokemons.length > 0" class="max-w-200">
+	  <div v-if="!showSpinner && (pokemons && pokemons.length > 0)" class="max-w-200">
 	  <div  class="flex flex-wrap gap-5 justify-center">
 		<PokemonCard :pokemon="p" @select="onPokemonSelected" v-for="p in pokemons" :key="p.name"/>
 	  </div>
@@ -179,7 +193,8 @@ const value = ref(null);
 	  />
 	  </div>
      </div>
-	 <p v-else>Pokémon Not Found</p>
+	 <p v-if="!showSpinner && !(pokemons && pokemons.length > 0)">Pokémon Not Found</p>
+	 <div v-if="showSpinner"><ProgressSpinner /></div>
   </div>
 	</div>
 </template>

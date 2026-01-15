@@ -16,3 +16,5 @@ export interface Pokemon {
   types: string[],
   evolution_chain: EvolutionChain
 }
+
+export default Pokemon;
